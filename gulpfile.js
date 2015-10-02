@@ -10,6 +10,13 @@ gulp.task('index', function() {
     .pipe(gulp.dest(build_path));
 });
 
+gulp.task('env', function() {
+  return gulp.src([
+      '.env',
+      '.static'])
+    .pipe(gulp.dest(build_path));
+});
+
 gulp.task('libs', function() {
   return gulp.src('lib/**')
     .pipe(gulp.dest(build_path + '/lib'));
@@ -20,6 +27,6 @@ gulp.task('tangram', function() {
     .pipe(gulp.dest(build_path + '/lib'));
 });
 
-gulp.task('build', ['index', 'libs', 'tangram']);
+gulp.task('build', ['index', 'env', 'libs', 'tangram']);
 
 gulp.task('default', ['build']);
