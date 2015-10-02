@@ -1,0 +1,28 @@
+#!/bin/sh
+set -e -x
+git --version
+upstream=$1
+: ${upstream:=blnalt}
+: ${REPO:=git@github.com:almereyda/alternatives.berlin}
+git fetch $upstream
+if [ `git rev-list HEAD...$upstream/master --count` -ne 0 ]; then
+  echo "not deploying"
+  exit 1
+fi
+npm i
+rm -rf _public
+
+# use --reference when not in shallow clone
+# git clone $REPO --reference . -b dokku _public
+
+git clone $REPO -b deployment _public
+rm -rf _public/*
+REV=`git describe --always`
+BUILD=git-$REV ./node_modules/.bin/gulp build
+cd _public
+git remote add deploy dokku@apps.ecobytes.net:alternatives-berlin
+git add -A .
+echo "regen for $REV" | git commit-tree `git write-tree` -p `git rev-parse HEAD` -p $REV | xargs git reset --hard
+git push origin
+git push -f deploy deployment:master
+cd ..
