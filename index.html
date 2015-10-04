@@ -5,12 +5,18 @@
     http://github.com/tangrams/tangram
     http://mapzen.com
 -->
-<html lang="en-us">
+<html prefix="og: http://ogp.me/ns#">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>alternatives berlin</title>
+
+    <meta property="og:title" content="Jons dreißigster Geburtstag" />
+    <meta property="og:description" content="Eine interaktive 3D Karte zur Darstellung der dynamiken des alternativen Berlins." />
+    <meta property="og:image" content="https://media.taiga.io/attachments/d/a/3/3/5471715c0b175922d3f448d16db4321ab7cf0bd3ee9956f53f82d254b896/tangram1.png" />
+    <meta property="og:site_name" content="alternatives berlin" />
+
+    <title>jons 30. :: alternatives berlin</title>
 
     <link rel="stylesheet" href="lib/leaflet/leaflet.css" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
@@ -50,13 +56,6 @@
     <script type="text/javascript">
       window.addEventListener("hashchange",function(){parent.postMessage(window.location.hash, "*")});
     </script>
-
-    <!-- Mapzen map UI
-    <script src='//s3.amazonaws.com/assets-staging.mapzen.com/ui/mapzen-ui.min.js'></script>
-    <script>
-      MPZN.bug();
-    </script>
-    -->
 
   </body>
 </html>
