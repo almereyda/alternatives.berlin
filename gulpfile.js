@@ -1,32 +1,61 @@
 var gulp = require('gulp');
+var bs = require('browser-sync').create();
 
-build_path = '_public';
+var reload = bs.reload;
+var build_path = '_public';
 
-gulp.task('index', function() {
-  return gulp.src([
-      'index.html',
-      'main.js',
-      'scene.yaml'])
-    .pipe(gulp.dest(build_path));
-});
 
 gulp.task('env', function() {
-  return gulp.src([
+  gulp.src([
       '.env',
       '.static'])
     .pipe(gulp.dest(build_path));
 });
 
+
+gulp.task('index', function() {
+  gulp.src('index.html')
+    .pipe(gulp.dest(build_path));
+});
+
+gulp.task('favicons', function() {
+  gulp.src('res/favicon.ico')
+    .pipe(gulp.dest(build_path));
+});
+
 gulp.task('libs', function() {
-  return gulp.src('lib/**')
+  gulp.src('lib/**')
     .pipe(gulp.dest(build_path + '/lib'));
 });
+
 
 gulp.task('tangram', function() {
-  return gulp.src('node_modules/tangram/dist/tangram.min.js')
+  gulp.src('node_modules/tangram/dist/tangram.min.js')
     .pipe(gulp.dest(build_path + '/lib'));
 });
 
-gulp.task('build', ['index', 'env', 'libs', 'tangram']);
+gulp.task('setting', function() {
+  gulp.src([
+      'main.js',
+      'scene.yaml'])
+    .pipe(gulp.dest(build_path));
+});
 
+
+gulp.task('server', function() {
+  bs.init({
+    server: {
+      baseDir: build_path,
+    }
+  });
+  gulp.watch(['main.js','scene.yaml'], ['setting']);
+  gulp.watch(['index.html'], ['index']);
+
+  gulp.watch(['index.html'], {cwd: build_path}, reload);
+  gulp.watch(['main.js','scene.yaml'], {cwd: build_path}, reload);
+});
+
+
+gulp.task('build', ['env', 'index', 'favicons', 'libs', 'tangram', 'setting']);
+gulp.task('dev', ['build', 'server']);
 gulp.task('default', ['build']);

@@ -9,7 +9,7 @@ if [ `git rev-list HEAD...$upstream/master --count` -ne 0 ]; then
   echo "not deploying"
   exit 1
 fi
-npm i
+npm start --version && [ -d "./node_modules/tangram" ] || npm i
 rm -rf _public
 
 # use --reference when not in shallow clone

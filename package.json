@@ -4,13 +4,15 @@
   "description": "Eine interaktive 3D Karte zur Darstellung der dynamiken des alternativen Berlins.",
   "main": "main.js",
   "dependencies": {
+    "gulp": "^3.9.0",
     "tangram": "tangrams/tangram"
   },
   "devDependencies": {
-    "gulp": "^3.9.0"
+    "browser-sync": "^2.9.8"
   },
   "scripts": {
     "start": "node_modules/gulp/bin/gulp.js",
+    "serve": "node_modules/gulp/bin/gulp.js server",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
