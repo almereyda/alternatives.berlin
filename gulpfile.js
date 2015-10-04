@@ -46,13 +46,20 @@ gulp.task('server', function() {
   bs.init({
     server: {
       baseDir: build_path,
-    }
+    },
+    files: [
+      'index.html',
+      'main.js',
+      'scene.yaml'
+    ],
+    ghostMode: false,
+    notify: false,
+    online: false,
+    open: false,
+    ui: false
   });
   gulp.watch(['main.js','scene.yaml'], ['setting']);
   gulp.watch(['index.html'], ['index']);
-
-  gulp.watch(['index.html'], {cwd: build_path}, reload);
-  gulp.watch(['main.js','scene.yaml'], {cwd: build_path}, reload);
 });
 
 
