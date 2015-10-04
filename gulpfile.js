@@ -20,8 +20,11 @@ gulp.task('index', function() {
     .pipe(gulp.dest(build_path));
 });
 
-gulp.task('favicons', function() {
-  gulp.src('res/favicon.ico')
+gulp.task('res', function() {
+  gulp.src([
+      'res/favicon.ico',
+      'res/circle.png'
+    ])
     .pipe(gulp.dest(build_path));
 });
 
@@ -40,7 +43,8 @@ gulp.task('tangram', function() {
 gulp.task('setting', function() {
   gulp.src([
       'main.js',
-      'scene.yaml'])
+      'scene.yaml'
+    ])
     .pipe(gulp.dest(build_path));
 });
 
@@ -71,6 +75,6 @@ gulp.task('server', function() {
 });
 
 
-gulp.task('build', ['env', 'index', 'favicons', 'libs', 'tangram', 'setting']);
+gulp.task('build', ['env', 'index', 'res', 'libs', 'tangram', 'setting']);
 gulp.task('dev', ['build', 'server']);
 gulp.task('default', ['build']);
