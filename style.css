@@ -1,0 +1,247 @@
+/* resets */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline
+}
+
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -o-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-text-size-adjust: none;
+}
+
+html, body {
+  height: 100%;
+  /* overflow: hidden */
+}
+
+/* Map */
+
+#map {
+  position: fixed !important;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+}
+
+.awesome-marker i { font-size: 26px !important; }
+
+/* Story Map */
+
+#slides_container {
+  display: none;
+  position: absolute;
+  top: 40px;
+  left: 40px;
+  width: 320px;
+  padding: 30px;
+  padding-right: 20px;
+  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.9);
+  z-index: 10;
+  /* overflow-y: auto; */
+  border-radius: 10px;
+  margin-bottom: 40px;
+}
+#slides_container.visible {
+  display: block !important;
+  z-index: 400;
+}
+#slides_container .slide {
+  display: none;
+  /* overflow-y: scroll; */
+  /* padding-right: 20px */
+}
+#slides_container .slide.selected {
+  display: block !important;
+  width: 100%;
+}
+#slides_container .slide.scrolled img {
+  margin: 20px 0;
+  width: 100%
+}
+#slides_container .slide strong {
+  font-family: serif
+}
+#slides_container .slide em {
+  font-style: italic
+}
+#slides_container h1, #slides_container h2, #slides_container h3, #slides_container h4, #slides_container h5, #slides_container h6 {
+  font-family: Sans-serif;
+  color: #333;
+  font-size: 45px;
+  padding-top: 15px;
+}
+/*#slides_container h1:after, #slides_container h2:after, #slides_container h3:after, #slides_container h4:after, #slides_container h5:after, #slides_container h6:after {
+  display: block;
+  margin: 20px 0 20px 0;
+  height: 3px;
+  content: " ";
+  text-shadow: none;
+  background-color: #333;
+  width: 140px
+}*/
+#slides_container h2, #slides_container h3, #slides_container h4, #slides_container h5, #slides_container h6 {
+  font-size: 19px
+}
+/*#slides_container h2:after, #slides_container h3:after, #slides_container h4:after, #slides_container h5:after, #slides_container h6:after {
+  height: 1px;
+  margin: 18px 0 18px 0;
+  width: 180px
+}*/
+#slides_container p, #slides_container span {
+  font-family: Serif;
+  color: #333;
+  font-size: 15px;
+  line-height: 21px;
+  margin: 0 0 19px 0
+}
+#slides_container a {
+  color: #FF7373;
+  text-decoration: none
+}
+#slides_container a:hover {
+  text-decoration: underline
+}
+#front_slide.hidden {
+  display: none
+}
+#dots {
+  /* margin: 0 0 20px 0; */
+  display: inline;
+  float: left;
+}
+#dots li {
+  display: inline
+}
+#dots li a {
+  opacity: 0.2;
+  color: #333
+}
+#dots li a:before {
+  content: ' \25CF';
+  font-size: 16px
+}
+#dots li a.active {
+  opacity: 1
+}
+#dots li a:hover {
+  opacity: 1;
+  cursor: pointer;
+  text-decoration: none
+}
+#slides_container img {
+  margin: 10px 0;
+  max-width: 100%
+}
+#navButtons {
+  /* margin: 20px 0 0 0; */
+  display: inline;
+  float: right;
+}
+#navButtons li {
+  width: 30px;
+  display: inline
+}
+#navButtons li a {
+  display: inline-block;
+  width: 23px;
+  height: 30px;
+  background: transparent url('../img/navBtns.png?1510073816') no-repeat -10px 0
+}
+#navButtons li a:hover {
+  background-position: -10px -30px;
+  cursor: pointer
+}
+#navButtons li a.next {
+  background: transparent url('../img/navBtns.png?1510073816') no-repeat -30px 0
+}
+#navButtons li a.next:hover {
+  background-position: -30px -30px
+}
+
+#navs {
+  display: block;
+  margin-bottom: 20px;
+}
+
+li {
+  list-style-type: none;
+  cursor: pointer;
+}
+
+/* SoundCloud Menu */
+/* via http://www.designcouch.com/home/why/2014/04/23/pure-css-drawer-menu/ */
+
+#drawer-toggle-label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  right: 40px;
+  top: 40px;
+  height: 50px;
+  width: 50px;
+  display: block;
+  position: fixed;
+  background: black;
+  border-radius: 10px;
+  z-index: 600;
+}
+/* adds our "hamburger" menu icon */
+
+#drawer-toggle-label:before {
+  content: '';
+  display: block;
+  position: absolute;
+  height: 2px;
+  width: 24px;
+  background: #8d8d8d;
+  right: 13px;
+  top: 18px;
+  box-shadow: 0 6px 0 #8d8d8d, 0 12px 0 #8d8d8d;
+}
+
+#drawer {
+  position: fixed;
+  top: 40px;
+  left: -600px;
+  width: 560px;
+  height: auto;
+  /* background: #2f2f2f; */
+  overflow-x: hidden;
+  overflow-y: hidden;
+  padding: 0px;
+  -webkit-overflow-scrolling: touch;
+  z-index: 1050;
+}
+
+/* checked styles (menu open state) */
+
+#drawer-toggle:checked ~ #drawer-toggle-label {
+  height: 200px;
+  width: 600px;
+  background: rgba(255, 255, 255, .8);
+}
+
+#drawer-toggle:checked ~ #drawer {
+  left: calc(100% - 640px);
+  padding-top: 15px;
+  padding-left: 15px;
+}
+
+#drawer-toggle {
+  position: absolute;
+  opacity: 0;
+}
