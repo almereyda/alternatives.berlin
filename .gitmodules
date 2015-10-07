@@ -1,9 +1,16 @@
 [submodule "lib/Leaflet"]
 	path = lib/Leaflet
 	url = git@github.com:Leaflet/Leaflet.git
+	ignore = dirty
 [submodule "lib/ionicons"]
 	path = lib/ionicons
 	url = https://github.com/driftyco/ionicons.git
+	ignore = dirty
 [submodule "lib/Leaflet.awesome-markers"]
 	path = lib/Leaflet.awesome-markers
 	url = https://github.com/lvoogdt/Leaflet.awesome-markers.git
+	ignore = dirty
+[submodule "lib/odyssey.js"]
+	path = lib/odyssey.js
+	url = https://github.com/CartoDB/odyssey.js.git
+	ignore = dirty
