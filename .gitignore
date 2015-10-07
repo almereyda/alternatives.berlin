@@ -4,3 +4,4 @@ node_modules/
 _public
 npm-debug.log
 res/og_image/
+nohup.out

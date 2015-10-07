@@ -5,6 +5,8 @@
   "main": "main.js",
   "dependencies": {
     "gulp": "^3.9.0",
+    "leaflet.ajax": "calvinmetcalf/leaflet-ajax",
+    "odyssey.js": "cartodb/odyssey.js",
     "tangram": "tangrams/tangram"
   },
   "devDependencies": {

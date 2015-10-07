@@ -5,8 +5,7 @@ sources:
 cameras:
     perspective:
         type: perspective
-#        vanishing_point: [0, -500]
-        focal_length: [[16, 2], [20, 6]] # pairs of [zoom, focal len]
+        focal_length: [[16, 1], [20, 2]] # pairs of [zoom, focal len]
         vanishing_point: [-250, -250] # relative to center of screen, in pixels
 lights:
     directional1:
@@ -168,90 +167,6 @@ styles:
                     float time_i = floor(t);
                     float time_f = fract(t);
                     color.rgb += step(0.9,random(st+time_i))*(1.0-time_f);
-    numeric-grid:
-        base: polygons
-        mix: [grid, generative-random]
-        animated: true
-        shaders:
-            blocks:
-                global: |
-                    float bin(vec2 ipos, float n){
-                        float remain = mod(n,33554432.);
-                        for(float i = 0.0; i < 25.0; i++){
-                            if ( floor(i/3.) == ipos.y && mod(i,3.) == ipos.x ) {
-                                return step(1.0,mod(remain,2.));
-                            }
-                            remain = ceil(remain/2.);
-                        }
-                        return 0.0;
-                    }
-                    float char(vec2 st, float n){
-                        st.x = st.x*2.-0.5;
-                        st.y = st.y*1.2-0.1;
-                        vec2 grid = vec2(3.,5.);
-                        vec2 ipos = floor(st*grid);
-                        n = floor(mod(n,10.));
-                        float digit = 0.0;
-                        if (n < 1. ) { digit = 31600.; }
-                        else if (n < 2. ) { digit = 9363.0; }
-                        else if (n < 3. ) { digit = 31184.0; }
-                        else if (n < 4. ) { digit = 31208.0; }
-                        else if (n < 5. ) { digit = 23525.0; }
-                        else if (n < 6. ) { digit = 29672.0; }
-                        else if (n < 7. ) { digit = 29680.0; }
-                        else if (n < 8. ) { digit = 31013.0; }
-                        else if (n < 9. ) { digit = 31728.0; }
-                        else if (n < 10. ) { digit = 31717.0; }
-                        float pct = bin(ipos, digit);
-                        vec2 borders = vec2(1.);
-                        // vec2 fpos = fract(st*grid);
-                        // borders *= step(0.01,fpos.x) * step(0.01,fpos.y);   // inner
-                        borders *= step(0.0,st)*step(0.0,1.-st);            // outer
-                        return step(.5,1.0-pct) * borders.x * borders.y;
-                    }
-                    float box(in vec2 st, in vec2 size){
-                        size = vec2(0.5) - size*0.5;
-                        vec2 uv = smoothstep(size,
-                                            size+vec2(0.001),
-                                            st);
-                        uv *= smoothstep(size,
-                                        size+vec2(0.001),
-                                        vec2(1.0)-st);
-                        return uv.x*uv.y;
-                    }
-                    float cross(in vec2 st, vec2 size){
-                        return  clamp(box(st, vec2(size.x*0.5,size.y*0.125)) +
-                                box(st, vec2(size.y*0.125,size.x*0.5)),0.,1.);
-                    }
-                color: |
-                    vec2 st = getTileCoords();
-                    color.rgb = TileGrid();
-                    float zoom = 0.0001+fract(u_map_position.z);
-                    // Crosses
-                    vec2 crosses_st = st + .5;
-                    vec2 crosses_st_f = fract(crosses_st);
-                    color.rgb *= 1.-cross(crosses_st_f,vec2(.08)*(1.+(1.-zoom)));
-                    color.rgb += vec3(.9)*cross(crosses_st_f,vec2(.05)*(1.+(1.-zoom)));
-
-                    // Digits
-                    vec2 digits_st = mod(st*(30.+30.*zoom),60.);
-                    vec2 digits_st_i = floor(digits_st);
-                    if (digits_st_i.y == 1. &&
-                        digits_st_i.x > 0. && digits_st_i.x < 7. ) {
-                        vec2 digits_st_f = fract(digits_st);
-                        float x = u_tile_origin.x+floor(u_time*20.);
-                        float pct = x/pow(10.,5.-digits_st_i.x);
-                        // pct = 100.*random(digits_st_i+floor(crosses_st)+floor(u_time*20.));
-                        color.rgb += vec3(char(digits_st_f,pct));
-                    } else if ( digits_st_i.y == 2. &&
-                                digits_st_i.x > 0. && digits_st_i.x < 8. ) {
-                        vec2 digits_st_f = fract(digits_st);
-                        float x = u_tile_origin.y+floor(u_time*20.);
-                        float pct = x/pow(10.,5.-digits_st_i.x);
-                        // pct = 100.*random(digits_st_i+floor(crosses_st)+floor(u_time*20.));
-                        color.rgb += vec3(char(digits_st_f,pct));
-                    }
-
 
     buildings:
         base: polygons
@@ -332,15 +247,15 @@ styles:
                         color.rgb = vec3(0.);
                     }
 
-    buildingsLines:
-        base: lines
-        mix: tools
-        lighting: false
-        texcoords: true
-        shaders:
-            blocks:
-                position: |
-                    position.z *= max(1.0,0.5+(1.0-(u_map_position.z/20.0))*5.0);
+    # buildingsLines:
+    #     base: lines
+    #     mix: tools
+    #     lighting: false
+    #     texcoords: true
+    #     shaders:
+    #         blocks:
+    #             position: |
+    #                 position.z *= max(1.0,0.5+(1.0-(u_map_position.z/20.0))*5.0);
     tools:
         animated: true
         shaders:
@@ -409,9 +324,9 @@ styles:
                     float t = -u_time*.5;
                     float radius = 0.0;
                     // radius = length(xy)*10.;
-                    radius = dot(xy,xy)*3.;
+                    radius = dot(xy,xy)*7.;
 
-                    color.rgb = mix(color.rgb,1.-color.rgb,1.0-aastep(.3,sin(fract(radius+t)*3.1415)));
+                    color.rgb = mix(color.rgb,1.-color.rgb,1.0-aastep(.5,sin(fract(radius+t)*3.1415)));
 
     border:
         base: lines
@@ -434,33 +349,6 @@ styles:
                     float pattern = aastep(.5,pulse(st.x,.5,.2));
                     color.rgb = mix(background,color.rgb,pattern);
 
-    waves:
-        base: polygons
-        mix: tools
-        shaders:
-            blocks:
-                color: |
-                    vec2 st = (gl_FragCoord.xy / u_resolution.xy);
-                    float aspect = u_resolution.x/u_resolution.y;
-                    // size.x *= aspect;
-
-                    vec2 pos = st;
-                    pos.x = pos.x*aspect;
-                    pos.y += sin(pos.x*30.)*.01;
-                    color.rgb = mix(color.rgb,background,stripes(pos*200.,.4));
-    zigzag:
-        base: polygons
-        mix: tools
-        shaders:
-            blocks:
-                color: |
-                    vec2 st = (gl_FragCoord.xy / u_resolution.xy);
-                    float aspect = u_resolution.x/u_resolution.y;
-                    // size.x *= aspect;
-
-                    vec2 pos = fract(st*100.);
-                    pos.y += mix(fract(pos.x),fract(1.0-pos.x),step(.5,pos.x))*3.;
-                    color.rgb = mix(color.rgb,background,stripes(pos,.3));
     hatch:
         base: polygons
         mix: tools
@@ -470,95 +358,58 @@ styles:
                     vec2 st = (gl_FragCoord.xy / u_resolution.xy);
                     float aspect = u_resolution.x/u_resolution.y;
                     // size.x *= aspect;
-                    color.rgb = mix(color.rgb,background,stripes(st*3.));
-    frame:
-        base: polygons
-        mix: tools
-        shaders:
-            blocks:
-                color: |
-                    vec2 st = (gl_FragCoord.xy / u_resolution.xy);
-                    float aspect = u_resolution.x/u_resolution.y;
-                    // size.x *= aspect;
-
-                    vec2 pos = st;
-                    pos.x = pos.x*aspect;
-                    pos.y += sin(pos.x*30.)*.01;
-                    color.rgb = mix(color.rgb,background,stripes(pos*200.,.4));
+                    color.rgb = mix(color.rgb,background,stripes(st*2.5));
 
 layers:
-    earth:
-        data: { source: osm }
-        draw:
-            polygons:
-                order: 0
-                color: '#555'
-            waves:
-                order: 0
-                color: [0.824, 0.812, 0.804]
-            border:
-                order: 5
-                color: #464C40
-                cap: round
-                width: 8px
-            simple-grid:
-                order: 0
-                color: [0.362,0.362,0.362]
     water:
         data: { source: osm }
         draw:
-            polygons:
+            simple-grid:
+                order: 3
+                color: [0.250,1.000,1.000]
+    landuse:
+        data: { source: osm }
+        draw:
+            hatch:
                 order: 2
-                color: '#353535'
-            frame:
-                order: 1
-                color: [1.000, 1.000, 1.000]
+                color: #464C40
             b_border:
                 order: 5
                 cap: round
                 width: 8px
                 color: #464C40
                 width: 5px
-            numeric-grid:
-                order: 3
-                color: [1.000,1.000,1.000]
-            outline:
-                order: 2
-                style: lines
-                color: [1.000,1.000,1.000]
-                width: 2px
-                tile_edges: false
-    landuse:
-        data: { source: osm }
-        draw:
-            polygons:
-                order: 1
-                color: '#666'
-            hatch:
-                order: 2
-                color: #464C40
-            lines:
-                order: 3
-                color: white
-                cap: round
-                width: 2px
-    roads:
-        data: { source: osm }
-        filter: { not: { highway: service, kind: rail } }
+    small-roads:
+        data: { source: osm, layer: roads }
+        filter:
+            any:
+                - highway: service
+                - highway: footway
+                - highway: path
+                - highway: residential
+                - highway: track
+                - highway: steps
         draw:
             lines:
                 order: 4
                 color: white
                 width: [[5, 0.5px],[15, 2px],[85, 50]]
+    roads:
+        data: { source: osm }
+        filter:
+            none:
+                - highway: service
+                - highway: footway
+                - highway: path
+                - highway: residential
+                - highway: track
+                - highway: steps
+                - kind: rail
+        draw:
             roads:
                 order: 5
                 color: [0, 0, 0]
                 width: 8
-            outline:
-                style: lines
-                order: 4
-                color: [0.773,0.763,0.763]
-                width: 8.5
         oneway:
             filter: { oneway: yes }
             draw: { roads: { color: red } }
@@ -568,52 +419,8 @@ layers:
             polygons:
                 order: 50
                 color: '#999'
-            b_border:
-                order: 6
-                color: [[10,[1,1,1]],[15,[1,1,1]],[18,[0.306, 0.306, 0.306]]]
-                width: [[10, 1], [12, 1px],[14, 1px], [16, 2px], [17, 3px], [18, 5px]]
-            buildings:
-                order: 7
-                color: Style.color.pseudoRandomColor()
-        3d-buildings:
-            filter: { $zoom: { min: 13 } }
-            draw:
-                buildings:
-                    extrude: true
-                buildingsLines:
-                    order: 8
-                    color: [0.687,0.660,0.660]
-                    width: .5px
-                    extrude: true
         extruded:
             draw:
                 polygons:
                     style: buildings
                     extrude: function () { return feature.height > 0 || $zoom >= 16; }
-    road_labels:
-        data: { source: osm, layer: roads }
-        filter: { name: true, aeroway: false, tunnel: false, railway: false, not: { kind: rail } }
-
-        highway:
-            filter: { kind: highway, $zoom: { min: 7 } }
-            draw:
-                text:
-                    font:
-                        fill: white
-                        typeface: 500 12px Helvetica
-        not_highway:
-            filter: { not: { kind: highway }, $zoom: { min: 13 } }
-            draw:
-                text:
-                    font:
-                        fill: white
-                        typeface: 100 11px Helvetica
-    places:
-        data: { source: osm }
-        filter: { name: true }
-        draw:
-            text:
-                font:
-                    typeface: Italic 14px Times
-                    fill: black
-                    stroke: { color: white , width: 5 }
