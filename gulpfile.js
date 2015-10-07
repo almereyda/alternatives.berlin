@@ -32,7 +32,8 @@ gulp.task('res', function() {
       'res/sbahn.svg',
       'res/s3.svg',
       'res/s47.svg',
-      'res/zuwegung.geojson'
+      'res/zuwegung.geojson',
+      'res/letsfetz.png'
     ])
     .pipe(gulp.dest(build_path));
 });
