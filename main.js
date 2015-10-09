@@ -5,7 +5,7 @@ var map = (function () {
     'use strict';
 
     var locations = {
-        'Mellow Park': [52.455391527403584, 13.563791973750744, 17.574999999999985]
+        'Mellow Park': [52.455391527403584, 13.563791973750744, 15.574999999999985]
     };
 
     var map_start_location = locations['Mellow Park'];
@@ -63,6 +63,9 @@ function click(el) {
 };
 
 // md_template alternative via http://bl.ocks.org/anonymous/b0b6ecf496e4e83db62b
+
+/* map styling */
+
 var mellowpark = (function() {
   L.AwesomeMarkers.Icon.prototype.options.prefix = 'ion';
 
@@ -88,6 +91,8 @@ var mellowpark = (function() {
   };
 
 
+/* data */
+
   var Zuwegung = new L.geoJson.ajax("zuwegung.geojson", {style:Wege, interactive: false})
     .addTo(map);
 
@@ -103,6 +108,8 @@ var mellowpark = (function() {
   var Koepenick = new L.Marker([52.458577, 13.5815192], {icon: train, interactive: false})
     .addTo(map);
 
+/* Odyssey init */
+
   var seq = O.Triggers.Sequential();
   // enanle keys to move
   O.Triggers.Keys().left().then(seq.prev, seq)
@@ -112,13 +119,29 @@ var mellowpark = (function() {
   click(document.querySelectorAll('.prev')).then(seq.prev, seq)
 
   var slides = O.Actions.Slides('slides');
-  var progress = O.UI.DotProgress('dots').count(2);
+  var progress = O.UI.DotProgress('dots').count(6);
 
-    var story = O.Story()
+/* WiP to stash the 12 blocks below */
+
+/*
+
+var actionTemplate = new O.Parallel
+
+var actions = {
+  'landing': actionTemplate(
+    MellowPark.getLatLng()
+  )
+};
+
+*/
+
+/* sequential narration */
+
+var story = O.Story()
     .addState(
       seq.step(0),
       O.Parallel(
-        map.actions.setView(MellowPark.getLatLng(), 17),
+        map.actions.panTo(MellowPark.getLatLng(), 15, {duration: 7}),
         slides.activate(0),
         progress.activate(0)
       )
@@ -126,7 +149,7 @@ var mellowpark = (function() {
     .addState(
       seq.step(1),
       O.Parallel(
-        map.actions.setView(Pavillion.getLatLng(), 19),
+        map.actions.panTo(Pavillion.getLatLng(), 19, {duration: 3}),
         slides.activate(1),
         progress.activate(1)
       )
@@ -134,7 +157,7 @@ var mellowpark = (function() {
     .addState(
       seq.step(2),
       O.Parallel(
-        map.actions.setView(MellowPark.getLatLng(), 16),
+        map.actions.panTo(MellowPark.getLatLng(), 16, {duration: 4}),
         slides.activate(2),
         progress.activate(2)
       )
@@ -142,7 +165,7 @@ var mellowpark = (function() {
     .addState(
       seq.step(3),
       O.Parallel(
-        map.actions.panTo(Spindlersfeld.getLatLng(), {duration: 1}),
+        map.actions.panTo(Spindlersfeld.getLatLng(), 13, {duration: 3.3}),
         slides.activate(3),
         progress.activate(3)
       )
@@ -150,7 +173,7 @@ var mellowpark = (function() {
     .addState(
       seq.step(4),
       O.Parallel(
-        map.actions.panTo(Koepenick.getLatLng(), {duration: 1}),
+        map.actions.panTo(Koepenick.getLatLng(), 13, {duration: 1.2}),
         slides.activate(4),
         progress.activate(4)
       )
@@ -158,15 +181,18 @@ var mellowpark = (function() {
     .addState(
       seq.step(5),
       O.Parallel(
-        map.actions.setView([52.4530558, 13.5715072], 15.5),
+        map.actions.panTo([52.4530558, 13.5715072], 15.5, {duration: 1.7}),
         slides.activate(5),
         progress.activate(5)
       )
     )
+
+/* progress bar steps */
+
     .addState(
       progress.step(0),
       O.Parallel(
-        map.actions.setView(MellowPark.getLatLng(), 17),
+        map.actions.panTo(MellowPark.getLatLng(), 24, {duration: 7}),
         slides.activate(0),
         progress.activate(0)
       )
@@ -174,7 +200,7 @@ var mellowpark = (function() {
     .addState(
       progress.step(1),
       O.Parallel(
-        map.actions.setView(Pavillion.getLatLng(), 19),
+        map.actions.panTo(Pavillion.getLatLng(), 19, {duration: 3}),
         slides.activate(1),
         progress.activate(1)
       )
@@ -182,7 +208,7 @@ var mellowpark = (function() {
     .addState(
       progress.step(2),
       O.Parallel(
-        map.actions.setView(MellowPark.getLatLng(), 16),
+        map.actions.panTo(MellowPark.getLatLng(), 16, {duration: 4}),
         slides.activate(2),
         progress.activate(2)
       )
@@ -190,7 +216,7 @@ var mellowpark = (function() {
     .addState(
       progress.step(3),
       O.Parallel(
-        map.actions.panTo(Spindlersfeld.getLatLng(), {duration: 1}),
+        map.actions.panTo(Spindlersfeld.getLatLng(), 13, {duration: 3.3}),
         slides.activate(3),
         progress.activate(3)
       )
@@ -198,7 +224,7 @@ var mellowpark = (function() {
     .addState(
       progress.step(4),
       O.Parallel(
-        map.actions.panTo(Koepenick.getLatLng(), {duration: 1}),
+        map.actions.panTo(Koepenick.getLatLng(), 13, {duration: 1.2}),
         slides.activate(4),
         progress.activate(4)
       )
@@ -206,7 +232,7 @@ var mellowpark = (function() {
     .addState(
       progress.step(5),
       O.Parallel(
-        map.actions.setView([52.4530558, 13.5715072], 15.5),
+        map.actions.panTo([52.4530558, 13.5715072], 15.5, {duration: 1.7}),
         slides.activate(5),
         progress.activate(5)
       )
